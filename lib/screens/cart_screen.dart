@@ -5,23 +5,20 @@ import 'package:shop_app/widgets/cart_item.dart';
 import '../providers/cart.dart';
 import '../providers/orders.dart';
 
-class CartScreen extends StatefulWidget {
-  // #docregion ProductDetails-var
+class CartScreen extends StatelessWidget {
+  /// Screen to show the items in the cart
+
   static const routeName = '/cart_screen';
-
-  @override
-  _CartScreenState createState() => _CartScreenState();
-}
-
-class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
+    // The current cart
     final cart = Provider.of<Cart>(context);
 
     return Scaffold(
       appBar: AppBar(title: (Text('Cart'))),
       body: Column(
         children: <Widget>[
+          // Card displays cart items
           Card(
             child: Padding(
               padding: const EdgeInsets.all(16.0),

@@ -15,8 +15,8 @@ class OrderCard extends StatefulWidget {
 }
 
 class _OrderCardState extends State<OrderCard> {
+  // [_isExpanded] expands list tile
   bool _isExpanded = false;
-  double _totalAmount = 0.00;
 
   @override
   Widget build(BuildContext context) {

@@ -28,41 +28,51 @@ class _ProductOverviewStateScreen extends State<ProductOverviewScreen> {
     // #enddocregion ProductOverviewScreen-var
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('My Shop'),
-        actions: <Widget>[
-          PopupMenuButton(
-              onSelected: (FilterOptions selectedValue) => setState(
-                    () => selectedValue == FilterOptions.Favourites
-                        ? _showOnlyFavourites = true
-                        : _showOnlyFavourites = false,
-                  ),
-              icon: Icon(Icons.more_vert),
-              itemBuilder: (_) => [
-                    PopupMenuItem(
-                      child: Text('Show Favourites'),
-                      value: FilterOptions.Favourites,
-                    ),
-                    PopupMenuItem(
-                      child: Text('Show All'),
-                      value: FilterOptions.All,
-                    ),
-                  ]),
-          Consumer<Cart>(
-            builder: (context, cart, child) => Badge(
-              child: child,
-              value: cart.itemCount.toString(),
-            ),
-            child: IconButton(
-              icon: Icon(Icons.shopping_cart),
-              onPressed: () =>
-                  Navigator.of(context).pushNamed(CartScreen.routeName),
-            ),
-          )
-        ],
-      ),
-      body: ProductGridView(showFavourites: _showOnlyFavourites),
       drawer: AppDrawer(),
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return <Widget>[buildSliverAppBar(context)];
+        },
+        body: ProductGridView(showFavourites: _showOnlyFavourites),
+      ),
+    );
+  }
+
+  SliverAppBar buildSliverAppBar(BuildContext context) {
+    return SliverAppBar(
+      floating: true,
+      pinned: false,
+      snap: true,
+      actions: <Widget>[
+        PopupMenuButton(
+            onSelected: (FilterOptions selectedValue) => setState(
+                  () => selectedValue == FilterOptions.Favourites
+                      ? _showOnlyFavourites = true
+                      : _showOnlyFavourites = false,
+                ),
+            icon: Icon(Icons.filter_list),
+            itemBuilder: (_) => [
+                  PopupMenuItem(
+                    child: Text('Show Favourites'),
+                    value: FilterOptions.Favourites,
+                  ),
+                  PopupMenuItem(
+                    child: Text('Show All'),
+                    value: FilterOptions.All,
+                  ),
+                ]),
+        Consumer<Cart>(
+          builder: (context, cart, child) => Badge(
+            child: child,
+            value: cart.itemCount.toString(),
+          ),
+          child: IconButton(
+            icon: Icon(Icons.shopping_cart),
+            onPressed: () =>
+                Navigator.of(context).pushNamed(CartScreen.routeName),
+          ),
+        )
+      ],
     );
   }
 }

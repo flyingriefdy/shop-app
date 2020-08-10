@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/screens/orders_screen.dart';
@@ -24,10 +26,33 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => Orders()),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
+          textTheme: TextTheme(
+              headline6: TextStyle(
+                  fontFamily: 'OleoScript', fontWeight: FontWeight.bold),
+              headline5: TextStyle(
+                  fontFamily: 'OleoScript', fontWeight: FontWeight.bold)),
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
+          iconTheme: IconThemeData(
+            color: Colors.black38,
+          ),
+          appBarTheme: AppBarTheme(
+            iconTheme: IconThemeData(
+              color: Colors.black38,
+            ),
+            textTheme: TextTheme(
+              headline6: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            elevation: 0.0,
+            color: Colors.white,
+          ),
+          splashFactory: InkRipple.splashFactory,
         ),
         home: ProductOverviewScreen(),
         routes: {

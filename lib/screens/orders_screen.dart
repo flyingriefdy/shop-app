@@ -4,16 +4,11 @@ import 'package:provider/provider.dart';
 import '../providers/orders.dart' show Orders;
 import '../widgets/order_item.dart';
 
-class OrdersScreen extends StatefulWidget {
+class OrdersScreen extends StatelessWidget {
   static final routeName = '/order';
-
-  @override
-  _OrdersScreenState createState() => _OrdersScreenState();
-}
-
-class _OrdersScreenState extends State<OrdersScreen> {
   @override
   Widget build(BuildContext context) {
+    // The current orders
     final orders = Provider.of<Orders>(context);
 
     return Scaffold(
