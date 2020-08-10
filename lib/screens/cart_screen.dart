@@ -5,6 +5,7 @@ import 'package:shop_app/widgets/cart_item.dart';
 import '../providers/cart.dart';
 import '../providers/orders.dart';
 import '../constants.dart';
+import '../widgets/screen_title.dart';
 
 class CartScreen extends StatelessWidget {
   /// Screen to show the items in the cart
@@ -28,42 +29,47 @@ class CartScreen extends StatelessWidget {
         label: Text('Order Now'),
       ),
       appBar: AppBar(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: kDefaultPadding,
-                  vertical: kDefaultPadding,
+      body: CartColumn(cart: cart),
+    );
+  }
+}
+
+class CartColumn extends StatelessWidget {
+  const CartColumn({
+    Key key,
+    @required this.cart,
+  }) : super(key: key);
+
+  final Cart cart;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            ScreenTitle(title: 'Cart'),
+          ],
+        ),
+        // Card displays cart items
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(kDefaultPadding),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Text(
+                  'Total: \$${cart.totalAmount.toStringAsFixed(2)}',
+                  style: Theme.of(context).textTheme.headline6,
                 ),
-                child: Text(
-                  "Carts",
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-              ),
-            ],
-          ),
-          // Card displays cart items
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    'Total: \$${cart.totalAmount.toStringAsFixed(2)}',
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                ],
-              ),
+              ],
             ),
           ),
-          CartCard(cart: cart)
-        ],
-      ),
+        ),
+        CartCard(cart: cart)
+      ],
     );
   }
 }

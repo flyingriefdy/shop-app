@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import './product_item.dart';
 import '../providers/products.dart';
 import '../constants.dart';
+import '../widgets/screen_title.dart';
 
 class ProductGridView extends StatelessWidget {
   // #docregion ProductGridView-var
@@ -26,15 +27,8 @@ class ProductGridView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: kDefaultPadding,
-            vertical: kDefaultPadding,
-          ),
-          child: Text(
-            "Products",
-            style: Theme.of(context).textTheme.headline5,
-          ),
+        ScreenTitle(
+          title: 'Products',
         ),
         Expanded(
           child: GridView.builder(

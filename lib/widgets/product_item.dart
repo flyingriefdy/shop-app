@@ -56,7 +56,7 @@ class ProductItem extends StatelessWidget {
                             icon: product.isFavourite
                                 ? Icon(
                                     Icons.favorite,
-                                    color: Colors.red,
+                                    color: Theme.of(context).errorColor,
                                   )
                                 : Icon(Icons.favorite_border),
                             onPressed: () => product.toggleFavourite(),
@@ -77,12 +77,23 @@ class ProductItem extends StatelessWidget {
                               ]),
                           child: IconButton(
                               icon: Icon(Icons.shopping_cart),
-                              onPressed: () => cart.addItem(
-                                    product.id,
-                                    product.title,
-                                    product.price,
-                                    product.imgUrl,
-                                  )),
+                              onPressed: () {
+                                cart.addItem(product.id, product.title,
+                                    product.price, product.imgUrl);
+                                Scaffold.of(context).hideCurrentSnackBar();
+                                Scaffold.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Added item to cart!',
+                                    ),
+                                    action: SnackBarAction(
+                                      label: 'UNDO',
+                                      onPressed: () =>
+                                          cart.removeSingleItem(product.id),
+                                    ),
+                                  ),
+                                );
+                              }),
                         )
                       ],
                     ),
@@ -105,42 +116,5 @@ class ProductItem extends StatelessWidget {
         )
       ],
     );
-
-    // ClipRRect(
-    //   borderRadius: BorderRadius.circular(8.0),
-    //   child: GridTile(
-    //     child: GestureDetector(
-    //       onTap: () => Navigator.of(context)
-    //           .pushNamed(ProductDetailsScreen.routeName, arguments: product.id),
-    //       child: Image.network(
-    //         product.imgUrl,
-    //         fit: BoxFit.fill,
-    //       ),
-    //     ),
-    //     footer: GridTileBar(
-    //       leading: Consumer<Product>(
-    //           builder: (context, value, child) => IconButton(
-    //                 icon: Icon(product.isFavourite
-    //                     ? Icons.favorite
-    //                     : Icons.favorite_border),
-    //                 onPressed: () => product.toggleFavourite(),
-    //               )),
-    //       backgroundColor: Colors.black26,
-    //       title: Text(
-    //         product.title,
-    //         textAlign: TextAlign.center,
-    //       ),
-    //       trailing: IconButton(
-    //         icon: Icon(Icons.shopping_cart),
-    //         onPressed: () => cart.addItem(
-    //           product.id,
-    //           product.title,
-    //           product.price,
-    //           product.imgUrl,
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 }

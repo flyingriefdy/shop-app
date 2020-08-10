@@ -56,7 +56,12 @@ class _OrderCardState extends State<OrderCard> {
                                 title: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: <Widget>[
-                                    Text(e.title),
+                                    Expanded(
+                                      child: Text(
+                                        e.title,
+                                        softWrap: true,
+                                      ),
+                                    ),
                                     Spacer(),
                                     Text('${e.quantity}x \$${e.price}')
                                   ],

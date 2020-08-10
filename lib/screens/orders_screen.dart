@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/orders.dart' show Orders;
 import '../widgets/order_item.dart';
-import '../constants.dart';
+import '../widgets/screen_title.dart';
 
 class OrdersScreen extends StatelessWidget {
   static final routeName = '/order';
@@ -17,16 +17,7 @@ class OrdersScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: kDefaultPadding,
-              vertical: kDefaultPadding,
-            ),
-            child: Text(
-              "Orders",
-              style: Theme.of(context).textTheme.headline5,
-            ),
-          ),
+          ScreenTitle(title: 'Orders'),
           Expanded(
               child: ListView.builder(
             itemBuilder: (context, index) =>
