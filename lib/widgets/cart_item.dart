@@ -20,9 +20,10 @@ class CartCard extends StatelessWidget {
           direction: DismissDirection.endToStart,
           key: ValueKey(cart.items.values.toList()[index].id),
           background: Container(
+            color: Colors.red,
             child: Icon(
               Icons.delete,
-              color: Colors.red,
+              color: Colors.white,
             ),
             alignment: Alignment.centerRight,
             padding: const EdgeInsets.only(right: 16.0),

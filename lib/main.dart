@@ -10,6 +10,7 @@ import './providers/products.dart';
 import './providers/cart.dart';
 import './screens/cart_screen.dart';
 import './providers/orders.dart';
+import './constants.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,6 +30,15 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
+          cardTheme: CardTheme(
+            shadowColor: Colors.black26,
+            elevation: 8,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(kDefaultRadius)),
+          ),
+          popupMenuTheme: PopupMenuThemeData(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(kDefaultRadius))),
           textTheme: TextTheme(
               headline6: TextStyle(
                   fontFamily: 'OleoScript', fontWeight: FontWeight.bold),

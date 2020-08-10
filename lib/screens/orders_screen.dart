@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/orders.dart' show Orders;
 import '../widgets/order_item.dart';
+import '../constants.dart';
 
 class OrdersScreen extends StatelessWidget {
   static final routeName = '/order';
@@ -12,11 +13,20 @@ class OrdersScreen extends StatelessWidget {
     final orders = Provider.of<Orders>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Orders'),
-      ),
+      appBar: AppBar(),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: kDefaultPadding,
+              vertical: kDefaultPadding,
+            ),
+            child: Text(
+              "Orders",
+              style: Theme.of(context).textTheme.headline5,
+            ),
+          ),
           Expanded(
               child: ListView.builder(
             itemBuilder: (context, index) =>

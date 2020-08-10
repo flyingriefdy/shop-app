@@ -10,7 +10,10 @@ class AppDrawer extends StatelessWidget {
       child: Column(
         children: <Widget>[
           AppBar(
-            title: Text('Menu'),
+            title: Text(
+              'Menu',
+              style: Theme.of(context).textTheme.headline6,
+            ),
             automaticallyImplyLeading: false,
           ),
           ListTile(

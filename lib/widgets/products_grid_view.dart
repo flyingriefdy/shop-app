@@ -28,8 +28,8 @@ class ProductGridView extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: kdefaultPadding,
-            vertical: kdefaultPadding,
+            horizontal: kDefaultPadding,
+            vertical: kDefaultPadding,
           ),
           child: Text(
             "Products",
@@ -38,13 +38,13 @@ class ProductGridView extends StatelessWidget {
         ),
         Expanded(
           child: GridView.builder(
-            padding: const EdgeInsets.all(kdefaultPadding),
+            padding: const EdgeInsets.all(kDefaultPadding),
             itemCount: products.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               childAspectRatio: 2 / 4,
               crossAxisCount: 2,
-              mainAxisSpacing: kdefaultPadding,
-              crossAxisSpacing: kdefaultPadding,
+              mainAxisSpacing: kDefaultPadding,
+              crossAxisSpacing: kDefaultPadding,
             ),
             itemBuilder: (context, index) => ChangeNotifierProvider.value(
               value: products[index],

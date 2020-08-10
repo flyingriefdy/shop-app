@@ -26,7 +26,7 @@ class ProductItem extends StatelessWidget {
               elevation: 0.0,
               clipBehavior: Clip.antiAliasWithSaveLayer,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0)),
+                  borderRadius: BorderRadius.circular(kDefaultRadius)),
               child: Stack(
                 alignment: Alignment.center,
                 children: <Widget>[
@@ -93,7 +93,7 @@ class ProductItem extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: kdefaultPadding / 4),
+          padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
           child: Text(
             product.title,
             style: Theme.of(context).textTheme.caption,

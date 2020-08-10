@@ -4,6 +4,7 @@ import 'package:shop_app/widgets/cart_item.dart';
 
 import '../providers/cart.dart';
 import '../providers/orders.dart';
+import '../constants.dart';
 
 class CartScreen extends StatelessWidget {
   /// Screen to show the items in the cart
@@ -15,34 +16,47 @@ class CartScreen extends StatelessWidget {
     final cart = Provider.of<Cart>(context);
 
     return Scaffold(
-      appBar: AppBar(title: (Text('Cart'))),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Provider.of<Orders>(context, listen: false).addOrder(
+            cart.items.values.toList(),
+            cart.totalAmount,
+          );
+          cart.clear();
+        },
+        label: Text('Order Now'),
+      ),
+      appBar: AppBar(),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: kDefaultPadding,
+                  vertical: kDefaultPadding,
+                ),
+                child: Text(
+                  "Carts",
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+              ),
+            ],
+          ),
           // Card displays cart items
           Card(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   Text(
-                    'Total: ',
+                    'Total: \$${cart.totalAmount.toStringAsFixed(2)}',
                     style: Theme.of(context).textTheme.headline6,
                   ),
-                  Spacer(),
-                  Chip(
-                      label: Text(
-                    '\$${cart.totalAmount.toStringAsFixed(2)}',
-                  )),
-                  FlatButton(
-                      onPressed: () {
-                        Provider.of<Orders>(context, listen: false).addOrder(
-                          cart.items.values.toList(),
-                          cart.totalAmount,
-                        );
-                        cart.clear();
-                      },
-                      child: Text('Order Now'))
                 ],
               ),
             ),
