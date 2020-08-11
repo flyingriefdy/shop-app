@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'product.dart';
+import 'package:uuid/uuid.dart';
 
 class Products with ChangeNotifier {
+  var uuid = Uuid();
+
   List<Product> _items = [
     Product(
       id: 'p1',
@@ -41,8 +44,14 @@ class Products with ChangeNotifier {
     return [..._items];
   }
 
-  void addProduct(item) {
-    // _items.add(item);
+  void addProduct(Product product) {
+    final newProduct = Product(
+        id: uuid.v4(),
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        imgUrl: product.imgUrl);
+    _items.add(newProduct);
     notifyListeners();
   }
 
@@ -52,5 +61,19 @@ class Products with ChangeNotifier {
 
   Product findProductById(String id) {
     return _items.firstWhere((product) => product.id == id);
+  }
+
+  void deleteProductById(String id) {
+    // remove product by Id
+    _items.removeWhere((element) => element.id == id);
+    notifyListeners();
+  }
+
+  void updateProductById(String id, Product newProduct) {
+    final productIndex = _items.indexWhere((element) => element.id == id);
+    if (productIndex >= 0) {
+      _items[productIndex] = newProduct;
+      notifyListeners();
+    }
   }
 }

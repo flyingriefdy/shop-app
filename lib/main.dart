@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/screens/orders_screen.dart';
@@ -8,6 +10,9 @@ import './providers/products.dart';
 import './providers/cart.dart';
 import './screens/cart_screen.dart';
 import './providers/orders.dart';
+import './constants.dart';
+import 'screens/user_product_screen.dart';
+import './screens/manage_product_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,10 +29,52 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => Orders()),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
+          inputDecorationTheme: InputDecorationTheme(
+              filled: false,
+              focusColor: Colors.grey,
+              fillColor: Colors.lightBlue,
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black12),
+                  borderRadius: BorderRadius.circular(kDefaultRadius))),
+          dialogTheme: DialogTheme(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(kDefaultRadius))),
+          cardTheme: CardTheme(
+            shadowColor: Colors.black26,
+            elevation: 8,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(kDefaultRadius)),
+          ),
+          popupMenuTheme: PopupMenuThemeData(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(kDefaultRadius))),
+          textTheme: TextTheme(
+              headline6: TextStyle(
+                  fontFamily: 'OleoScript', fontWeight: FontWeight.bold),
+              headline5: TextStyle(
+                  fontFamily: 'OleoScript', fontWeight: FontWeight.bold)),
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
+          iconTheme: IconThemeData(
+            color: Colors.black38,
+          ),
+          appBarTheme: AppBarTheme(
+            iconTheme: IconThemeData(
+              color: Colors.black38,
+            ),
+            textTheme: TextTheme(
+              headline6: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            elevation: 0.0,
+            color: Colors.white,
+          ),
+          splashFactory: InkRipple.splashFactory,
         ),
         home: ProductOverviewScreen(),
         routes: {
@@ -35,6 +82,8 @@ class MyApp extends StatelessWidget {
           CartScreen.routeName: (context) => CartScreen(),
           ProductOverviewScreen.routeName: (context) => ProductOverviewScreen(),
           OrdersScreen.routeName: (context) => OrdersScreen(),
+          UserProductsScreen.routeName: (context) => UserProductsScreen(),
+          ManageProductScreen.routeName: (context) => ManageProductScreen(),
         },
       ),
     );

@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 import './product_item.dart';
 import '../providers/products.dart';
+import '../constants.dart';
+import '../widgets/screen_title.dart';
 
 class ProductGridView extends StatelessWidget {
   // #docregion ProductGridView-var
@@ -22,14 +24,29 @@ class ProductGridView extends StatelessWidget {
         showFavourites ? productsData.favouriteItems : productsData.items;
     // #enddocregion build-var
 
-    return GridView.builder(
-      itemCount: products.length,
-      gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-      itemBuilder: (context, index) => ChangeNotifierProvider.value(
-        value: products[index],
-        child: ProductItem(),
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        ScreenTitle(
+          title: 'Products',
+        ),
+        Expanded(
+          child: GridView.builder(
+            padding: const EdgeInsets.all(kDefaultPadding),
+            itemCount: products.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              childAspectRatio: 2 / 4,
+              crossAxisCount: 2,
+              mainAxisSpacing: kDefaultPadding,
+              crossAxisSpacing: kDefaultPadding,
+            ),
+            itemBuilder: (context, index) => ChangeNotifierProvider.value(
+              value: products[index],
+              child: ProductItem(),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

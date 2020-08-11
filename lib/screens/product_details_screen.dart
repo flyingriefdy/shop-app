@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/providers/product.dart';
 
 import '../providers/products.dart';
+import '../constants.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   // #docregion ProductDetails-var
@@ -22,12 +23,17 @@ class ProductDetailsScreen extends StatelessWidget {
     // #enddocregion build-var
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(product.title),
-      ),
-      body: SingleChildScrollView(
-        child: ProductDetailsColumn(product: product),
-      ),
+      body: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                floating: true,
+                pinned: false,
+                snap: true,
+              )
+            ];
+          },
+          body: ProductDetailsColumn(product: product)),
     );
   }
 }
@@ -42,38 +48,71 @@ class ProductDetailsColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Container(
-          width: double.infinity,
-          height: 300,
-          child: Image.network(
-            product.imgUrl,
-            fit: BoxFit.fill,
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(
-            product.title,
-            style: Theme.of(context).textTheme.headline6,
-          ),
-        ),
-        Divider(),
-        Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(
-            '\$${product.price}',
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(
-            '\${product.description}',
-          ),
-        ),
-      ],
+    Size size = MediaQuery.of(context).size;
+
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          SizedBox(
+            height: size.height,
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  width: double.infinity,
+                  height: 300,
+                  child: Image.network(
+                    product.imgUrl,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: size.height * 0.4),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(blurRadius: 12, color: Colors.black12)
+                    ],
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(kDefaultRadius * 1.5),
+                      topRight: Radius.circular(kDefaultRadius * 1.5),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: size.height * 0.4),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        padding: const EdgeInsets.all(kDefaultPadding),
+                        child: Text(
+                          '${product.title}',
+                          style: Theme.of(context).textTheme.headline5,
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: kDefaultPadding / 2,
+                            horizontal: kDefaultPadding),
+                        child: Text(
+                          '\$${product.price}',
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(kDefaultPadding),
+                        child: Text(
+                          '$kLoremIpsum',
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
