@@ -66,10 +66,10 @@ class ProductDetailsColumn extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: size.height * 0.3),
+                  margin: EdgeInsets.only(top: size.height * 0.4),
                   decoration: BoxDecoration(
                     boxShadow: [
-                      BoxShadow(blurRadius: 8, color: Colors.black26)
+                      BoxShadow(blurRadius: 12, color: Colors.black12)
                     ],
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -79,7 +79,7 @@ class ProductDetailsColumn extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: size.height * 0.3),
+                  margin: EdgeInsets.only(top: size.height * 0.4),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[

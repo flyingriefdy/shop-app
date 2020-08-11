@@ -12,6 +12,7 @@ import './screens/cart_screen.dart';
 import './providers/orders.dart';
 import './constants.dart';
 import 'screens/user_product_screen.dart';
+import './screens/manage_product_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -31,6 +32,13 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
+          inputDecorationTheme: InputDecorationTheme(
+              filled: false,
+              focusColor: Colors.grey,
+              fillColor: Colors.lightBlue,
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black12),
+                  borderRadius: BorderRadius.circular(kDefaultRadius))),
           dialogTheme: DialogTheme(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(kDefaultRadius))),
@@ -75,6 +83,7 @@ class MyApp extends StatelessWidget {
           ProductOverviewScreen.routeName: (context) => ProductOverviewScreen(),
           OrdersScreen.routeName: (context) => OrdersScreen(),
           UserProductsScreen.routeName: (context) => UserProductsScreen(),
+          ManageProductScreen.routeName: (context) => ManageProductScreen(),
         },
       ),
     );
