@@ -5,11 +5,12 @@ import '../providers/orders.dart' show Orders;
 import '../widgets/order_item.dart';
 import '../widgets/screen_title.dart';
 
+/// A widget to display [Orders]. [Orders] are purchase [Cart] items.
 class OrdersScreen extends StatelessWidget {
   static final routeName = '/order';
   @override
   Widget build(BuildContext context) {
-    // The current orders
+    /// The current [Order].
     final orders = Provider.of<Orders>(context);
 
     return Scaffold(

@@ -5,22 +5,17 @@ import 'package:shop_app/providers/product.dart';
 import '../providers/products.dart';
 import '../constants.dart';
 
+/// A widget to display the details of a [Product].
 class ProductDetailsScreen extends StatelessWidget {
-  // #docregion ProductDetails-var
   static const routeName = '/product_details';
-  // #enddocregion ProductDetails-var
 
   @override
   Widget build(BuildContext context) {
-    // #docregion ProductDetails-arg
     final id = ModalRoute.of(context).settings.arguments as String;
-    // #enddocregion ProductDetails-arg
 
-    // #docregion build-var
     final product = Provider.of<Products>(
       context,
     ).findProductById(id);
-    // #enddocregion build-var
 
     return Scaffold(
       body: NestedScrollView(
@@ -62,7 +57,7 @@ class ProductDetailsColumn extends StatelessWidget {
                   height: 300,
                   child: Image.network(
                     product.imgUrl,
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 Container(

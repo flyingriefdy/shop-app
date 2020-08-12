@@ -7,35 +7,40 @@ import '../providers/orders.dart';
 import '../constants.dart';
 import '../widgets/screen_title.dart';
 
+/// A widget to display and manage [Cart] items. Users may delete [Cart] items
+/// Users may purchase [Cart] items.
+///
+/// Purchased [Cart] items are pushed into [Orders].
 class CartScreen extends StatelessWidget {
-  /// Screen to show the items in the cart
-
   static const routeName = '/cart_screen';
   @override
   Widget build(BuildContext context) {
-    // The current cart
+    /// The current [Cart].
     final cart = Provider.of<Cart>(context);
 
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
+          /// Adds [Cart] to [Order].
           Provider.of<Orders>(context, listen: false).addOrder(
             cart.items.values.toList(),
             cart.totalAmount,
           );
+
+          /// Clears [Cart].
           cart.clear();
         },
         label: Text('Order Now'),
       ),
       appBar: AppBar(),
-      body: CartColumn(cart: cart),
+      body: CartBody(cart: cart),
     );
   }
 }
 
-class CartColumn extends StatelessWidget {
-  const CartColumn({
+class CartBody extends StatelessWidget {
+  const CartBody({
     Key key,
     @required this.cart,
   }) : super(key: key);
@@ -53,7 +58,8 @@ class CartColumn extends StatelessWidget {
             ScreenTitle(title: 'Cart'),
           ],
         ),
-        // Card displays cart items
+
+        /// A card widget that displays [Cart] items.
         Card(
           child: Padding(
             padding: const EdgeInsets.all(kDefaultPadding),

@@ -21,12 +21,14 @@ class OrderItem {
 class Orders with ChangeNotifier {
   var uuid = new Uuid();
 
+  /// A list of [Product].
   List<OrderItem> _orders = [];
 
   List<OrderItem> get orders {
     return [..._orders];
   }
 
+  /// Adds [Product] into [_orders].
   void addOrder(List<CartItem> cartProducts, double total) {
     _orders.insert(
         0,
@@ -39,6 +41,7 @@ class Orders with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Clears [Product] in [_orders].
   void clearOrder() {
     _orders = [];
     notifyListeners();
