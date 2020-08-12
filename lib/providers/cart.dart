@@ -4,15 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class CartItem {
-  // #docregion CartItem-properties
   final String id;
   final String title;
   final int quantity;
   final double price;
   final String imgUrl;
-  //# enddocregion CartItem-properties
 
-  // #docregion CartItem-constructor
   CartItem({
     @required this.id,
     @required this.title,
@@ -20,30 +17,26 @@ class CartItem {
     @required this.price,
     @required this.imgUrl,
   });
-  //# enddocregion CartItem-constructor
-
 }
 
 class Cart with ChangeNotifier {
-  // #docregion Cart-var
+  /// A unique identifier generator.
   final uuid = Uuid();
 
+  /// A map of [CartItem].
   Map<String, CartItem> _items = {};
-  // #enddocregion Cart-var
 
-  // #docregion get items
+  /// Returns list of [CartItems] in [_items].
   Map<String, CartItem> get items {
     return {..._items};
   }
-  // #enddocregion get items
 
-  // #docregion get itemCount
+  /// Returns [_items] count.
   int get itemCount {
     return _items.length;
   }
-  // #enddocregion get itemCount
 
-  // #docregion get totalAmount
+  /// Returns total amount in [_items].
   double get totalAmount {
     var total = 0.00;
     _items.forEach((key, value) {
@@ -51,15 +44,15 @@ class Cart with ChangeNotifier {
     });
     return total;
   }
-  // #enddocregion get totalAmount
 
-  // #docregion addItem
+  /// Adds [Product] into [_items].
   void addItem(
     String productId,
     String title,
     double price,
     String imgUrl,
   ) {
+    /// Add 1 quantity if [CartItem] exists in [_items].
     if (_items.containsKey(productId)) {
       _items.update(
           productId,
@@ -71,6 +64,7 @@ class Cart with ChangeNotifier {
                 imgUrl: imgUrl,
               ));
     } else {
+      /// Creates new [CartItem] add adds to [_items].
       _items.putIfAbsent(
           productId,
           () => CartItem(
@@ -83,20 +77,20 @@ class Cart with ChangeNotifier {
     }
     notifyListeners();
   }
-  // #enddocregion addItem
 
-  // #docregion removeItem
+  /// Removes [CartItem] from [_items].
   void removeItem(String id) {
     _items.remove(id);
     notifyListeners();
   }
-  // #enddocregion removeItem
 
+  /// Clears all [CartItem] from [_items].
   void clear() {
     _items = {};
     notifyListeners();
   }
 
+  /// Removes single quantity of [Product] in [_items].
   void removeSingleItem(String productId) {
     if (!_items.containsKey(productId)) {
       return;
