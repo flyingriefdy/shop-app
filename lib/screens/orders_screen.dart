@@ -6,8 +6,27 @@ import '../widgets/order_item.dart';
 import '../widgets/screen_title.dart';
 
 /// A widget to display [Orders]. [Orders] are purchase [Cart] items.
-class OrdersScreen extends StatelessWidget {
+class OrdersScreen extends StatefulWidget {
   static final routeName = '/order';
+
+  @override
+  _OrdersScreenState createState() => _OrdersScreenState();
+}
+
+class _OrdersScreenState extends State<OrdersScreen> {
+  var _isLoaded = false;
+  @override
+  void initState() {
+    /// A hack instead of using didDependenciesChanged.
+    Future.delayed(Duration.zero).then((_) {
+      Provider.of<Orders>(context, listen: false).fetchOrders();
+      setState(() {
+        _isLoaded = true;
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     /// The current [Order].
@@ -15,18 +34,22 @@ class OrdersScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          ScreenTitle(title: 'Orders'),
-          Expanded(
-              child: ListView.builder(
-            itemBuilder: (context, index) =>
-                OrderCard(orders: orders, index: index),
-            itemCount: orders.orders.length,
-          ))
-        ],
-      ),
+      body: !_isLoaded
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                ScreenTitle(title: 'Orders'),
+                Expanded(
+                    child: ListView.builder(
+                  itemBuilder: (context, index) =>
+                      OrderCard(orders: orders, index: index),
+                  itemCount: orders.orders.length,
+                ))
+              ],
+            ),
     );
   }
 }

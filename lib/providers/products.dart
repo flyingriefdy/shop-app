@@ -4,6 +4,8 @@ import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../models/http_exception.dart';
+
 class Products with ChangeNotifier {
   /// The unique identifier generator.
   var uuid = Uuid();
@@ -94,15 +96,44 @@ class Products with ChangeNotifier {
   }
 
   /// Removes [Product] by Id.
-  void deleteProductById(String id) {
-    _items.removeWhere((element) => element.id == id);
+  Future<void> deleteProductById(String id) async {
+    final url = 'https://shop-app-41dfd.firebaseio.com/products/$id.json';
+
+    /// An index of the [Product] to be deleted.
+    final existingProductIndex =
+        _items.indexWhere((element) => element.id == id);
+
+    /// A [Product] to be deleted.
+    var existingProduct = _items[existingProductIndex];
+
+    /// Deleting [Product] from [_list].
+    _items.removeAt(existingProductIndex);
     notifyListeners();
+    final response = await http.delete(url);
+
+    if (response.statusCode >= 400) {
+      /// Replace deleted  / roll back [Product] in case of HTTP request err.
+      /// This pattern is also called optimistic updating.
+      _items.insert(existingProductIndex, existingProduct);
+      notifyListeners();
+      throw HttpException('Could not delete product.');
+    }
+    existingProduct = null;
+    ;
   }
 
   /// Updates [Product] by Id.
-  void updateProductById(String id, Product newProduct) {
+  Future<void> updateProductById(String id, Product newProduct) async {
     final productIndex = _items.indexWhere((element) => element.id == id);
     if (productIndex >= 0) {
+      final url = 'https://shop-app-41dfd.firebaseio.com/products/$id.json';
+      await http.patch(url,
+          body: json.encode({
+            'title': newProduct.title,
+            'description': newProduct.description,
+            'imgUrl': newProduct.imgUrl,
+            'price': newProduct.price,
+          }));
       _items[productIndex] = newProduct;
       notifyListeners();
     }
@@ -113,6 +144,11 @@ class Products with ChangeNotifier {
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
+
+      /// Checks if payload is empty
+      if (extractedData == null) {
+        return;
+      }
       final List<Product> loadedProducts = [];
       extractedData.forEach((key, value) {
         loadedProducts.add(Product(

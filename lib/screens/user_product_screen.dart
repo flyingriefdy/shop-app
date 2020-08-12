@@ -10,6 +10,7 @@ import '../widgets/app_drawer.dart';
 /// A widget for user to add, edit, delete products
 class UserProductsScreen extends StatelessWidget {
   static final routeName = '/my_shop';
+
   @override
   Widget build(BuildContext context) {
     final productData = Provider.of<Products>(context);
@@ -25,40 +26,53 @@ class UserProductsScreen extends StatelessWidget {
           )
         ],
       ),
-      body: UserProductScreenBody(productData: productData),
+      body: UserProductScreenBody(
+        productData: productData,
+        context: context,
+      ),
     );
   }
 }
 
 class UserProductScreenBody extends StatelessWidget {
+  Future<void> _refreshProducts(BuildContext context) async {
+    await Provider.of<Products>(context, listen: false).fetchProducts();
+  }
+
+  final BuildContext context;
+
   const UserProductScreenBody({
     Key key,
     @required this.productData,
+    @required this.context,
   }) : super(key: key);
 
   final Products productData;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        ScreenTitle(title: 'Your Products'),
-        Expanded(
-            child: ListView.builder(
-          itemCount: productData.items.length,
-          itemBuilder: (context, index) {
-            return Column(children: [
-              UserProductItem(
-                title: productData.items[index].title,
-                imgUrl: productData.items[index].imgUrl,
-                id: productData.items[index].id,
-              ),
-              Divider()
-            ]);
-          },
-        ))
-      ],
+    return RefreshIndicator(
+      onRefresh: () => _refreshProducts(context),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          ScreenTitle(title: 'Your Products'),
+          Expanded(
+              child: ListView.builder(
+            itemCount: productData.items.length,
+            itemBuilder: (context, index) {
+              return Column(children: [
+                UserProductItem(
+                  title: productData.items[index].title,
+                  imgUrl: productData.items[index].imgUrl,
+                  id: productData.items[index].id,
+                ),
+                Divider()
+              ]);
+            },
+          ))
+        ],
+      ),
     );
   }
 }
