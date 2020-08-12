@@ -22,17 +22,31 @@ class ProductOverviewScreen extends StatefulWidget {
 }
 
 class _ProductOverviewStateScreen extends State<ProductOverviewScreen> {
+  /// Is loading.
+  var _isLoading = false;
+  var _isInit = true;
+
+  /// Is to show favourite [Product].
   var _showOnlyFavourites = false;
 
   @override
   void initState() {
-    // Provider.of<Products>(context).fetchProducts();
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
-    Provider.of<Products>(context).fetchProducts();
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      Provider.of<Products>(context).fetchProducts().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    }
+    _isInit = false;
     super.didChangeDependencies();
   }
 
@@ -44,7 +58,11 @@ class _ProductOverviewStateScreen extends State<ProductOverviewScreen> {
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return <Widget>[buildSliverAppBar(context)];
         },
-        body: ProductGridView(showFavourites: _showOnlyFavourites),
+        body: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : ProductGridView(showFavourites: _showOnlyFavourites),
       ),
     );
   }

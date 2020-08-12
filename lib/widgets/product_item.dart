@@ -9,6 +9,7 @@ import '../constants.dart';
 class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final scaffold = Scaffold.of(context);
     final product = Provider.of<Product>(context);
     final cart = Provider.of<Cart>(context, listen: false);
 
@@ -57,7 +58,15 @@ class ProductItem extends StatelessWidget {
                                     color: Theme.of(context).errorColor,
                                   )
                                 : Icon(Icons.favorite_border),
-                            onPressed: () => product.toggleFavourite(),
+                            onPressed: () async {
+                              try {
+                                product.toggleFavourite();
+                              } catch (err) {
+                                scaffold.showSnackBar(SnackBar(
+                                    content:
+                                        Text('Failed to favourite product')));
+                              }
+                            },
                           ),
                         ),
                         SizedBox(

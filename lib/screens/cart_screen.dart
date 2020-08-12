@@ -20,21 +20,56 @@ class CartScreen extends StatelessWidget {
 
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          /// Adds [Cart] to [Order].
-          Provider.of<Orders>(context, listen: false).addOrder(
-            cart.items.values.toList(),
-            cart.totalAmount,
-          );
-
-          /// Clears [Cart].
-          cart.clear();
-        },
-        label: Text('Order Now'),
-      ),
+      floatingActionButton: OrderFAB(cart: cart),
       appBar: AppBar(),
       body: CartBody(cart: cart),
+    );
+  }
+}
+
+class OrderFAB extends StatefulWidget {
+  const OrderFAB({
+    Key key,
+    @required this.cart,
+  }) : super(key: key);
+
+  final Cart cart;
+
+  @override
+  _OrderFABState createState() => _OrderFABState();
+}
+
+class _OrderFABState extends State<OrderFAB> {
+  var _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton.extended(
+      backgroundColor: widget.cart.totalAmount <= 0 || _isLoading
+          ? Colors.grey
+          : Theme.of(context).primaryColor,
+      onPressed: widget.cart.totalAmount <= 0 || _isLoading
+          ? null
+          : () async {
+              setState(() {
+                _isLoading = true;
+              });
+
+              /// Adds [Cart] to [Order].
+              try {
+                await Provider.of<Orders>(context, listen: false).addOrder(
+                  widget.cart.items.values.toList(),
+                  widget.cart.totalAmount,
+                );
+                setState(() {
+                  _isLoading = false;
+                });
+
+                /// Clears [Cart].
+                widget.cart.clear();
+              } catch (err) {}
+            },
+      label: _isLoading ? Text('Placing Order...') : Text('Order Now'),
     );
   }
 }
