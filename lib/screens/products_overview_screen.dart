@@ -6,12 +6,14 @@ import '../widgets/badge.dart';
 import '../providers/cart.dart';
 import 'cart_screen.dart';
 import '../widgets/app_drawer.dart';
+import '../providers/products.dart';
 
 enum FilterOptions {
   Favourites,
   All,
 }
 
+/// A widget to display [Products].
 class ProductOverviewScreen extends StatefulWidget {
   static final routeName = '/product_overview';
 
@@ -23,10 +25,19 @@ class _ProductOverviewStateScreen extends State<ProductOverviewScreen> {
   var _showOnlyFavourites = false;
 
   @override
-  Widget build(BuildContext context) {
-    // #docregion ProductOverviewScreen-var
-    // #enddocregion ProductOverviewScreen-var
+  void initState() {
+    // Provider.of<Products>(context).fetchProducts();
+    super.initState();
+  }
 
+  @override
+  void didChangeDependencies() {
+    Provider.of<Products>(context).fetchProducts();
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       drawer: AppDrawer(),
       body: NestedScrollView(

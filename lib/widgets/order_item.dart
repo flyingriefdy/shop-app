@@ -16,7 +16,7 @@ class OrderCard extends StatefulWidget {
 }
 
 class _OrderCardState extends State<OrderCard> {
-  // [_isExpanded] expands list tile
+  /// [_isExpanded] expands list tile.
   bool _isExpanded = false;
 
   @override

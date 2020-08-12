@@ -7,6 +7,7 @@ import '../providers/products.dart';
 import '../widgets/user_product_item.dart';
 import '../widgets/app_drawer.dart';
 
+/// A widget for user to add, edit, delete products
 class UserProductsScreen extends StatelessWidget {
   static final routeName = '/my_shop';
   @override

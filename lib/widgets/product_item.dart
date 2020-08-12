@@ -9,10 +9,8 @@ import '../constants.dart';
 class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // #docregion build-var
     final product = Provider.of<Product>(context);
     final cart = Provider.of<Cart>(context, listen: false);
-    // #enddocregion build-var
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
