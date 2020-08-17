@@ -6,50 +6,54 @@ import '../widgets/order_item.dart';
 import '../widgets/screen_title.dart';
 
 /// A widget to display [Orders]. [Orders] are purchase [Cart] items.
-class OrdersScreen extends StatefulWidget {
+class OrdersScreen extends StatelessWidget {
   static final routeName = '/order';
 
-  @override
-  _OrdersScreenState createState() => _OrdersScreenState();
-}
-
-class _OrdersScreenState extends State<OrdersScreen> {
-  var _isLoaded = false;
-  @override
-  void initState() {
-    /// A hack instead of using didDependenciesChanged.
-    Future.delayed(Duration.zero).then((_) {
-      Provider.of<Orders>(context, listen: false).fetchOrders();
-      setState(() {
-        _isLoaded = true;
-      });
-    });
-    super.initState();
-  }
+  /// Here is an exercise to use a stateless widget that uses FutureBuilder
+  /// to manage future. By doing this, you will not be required to manage
+  /// state in InitState to load your initial values like [fetchOrders].
+  /// This simplifies the process of managing future. Benefits you get is
+  /// a leaner code and to not rebuild your widget trees.
 
   @override
   Widget build(BuildContext context) {
-    /// The current [Order].
-    final orders = Provider.of<Orders>(context);
-
     return Scaffold(
-      appBar: AppBar(),
-      body: !_isLoaded
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                ScreenTitle(title: 'Orders'),
-                Expanded(
-                    child: ListView.builder(
-                  itemBuilder: (context, index) =>
-                      OrderCard(orders: orders, index: index),
-                  itemCount: orders.orders.length,
-                ))
-              ],
-            ),
-    );
+        appBar: AppBar(),
+        body: FutureBuilder(
+          future: Provider.of<Orders>(context, listen: false).fetchOrders(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              if (snapshot.error != null) {
+                /// ...
+                /// Error handling.
+                return Center(
+                  child: Text('An error has occured!'),
+                );
+              } else {
+                return Consumer<Orders>(
+                  builder: (context, orders, child) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        ScreenTitle(title: 'Orders'),
+                        Expanded(
+                          child: ListView.builder(
+                            itemBuilder: (context, index) =>
+                                OrderCard(orders: orders, index: index),
+                            itemCount: orders.orders.length,
+                          ),
+                        )
+                      ],
+                    );
+                  },
+                );
+              }
+            }
+          },
+        ));
   }
 }
